@@ -2,25 +2,24 @@
 
 session_start();
 include_once 'autoload.php';
-if(!(new UserRepositoryService())->isLoggedInNow()){
-    header('location: index.php?controller=prijava' );
-}
 
-switch($_GET['controller'] ?? 'index') {
-    case 'prijava':
+
+
+switch($_GET['controller'] ?? 'Početna') {
+    case 'Prijava':
         $controller = new LoginController();
         break;
-    case 'odjava':
+    case 'Odjava':
         $controller = new LoginController();
         break;
-    case 'registracija':
+    case 'Registracija':
         $controller = new RegisterController();
         break;
-    case 'index':
+    case 'Početna':
         $controller = new IndexController();
         break;
     case 'Profil':
-        header('location: profile.php');
+        header('location: profile.php?' . $_SESSION['user'] ?? '');
         break;
     case 'Pratitelji':
         $controller = new FollowerController();
@@ -49,13 +48,12 @@ try {
 }
 catch (Exception $e){
     echo $e;
-}
-finally {
+} finally {
     if($response instanceof EmptyResponse ){
+        $controller->showHtml();
         $controller->showForm();
     }
 }
-$index = new IndexController();
-$index->showHtml();
-$index->showForm();
+
+
 

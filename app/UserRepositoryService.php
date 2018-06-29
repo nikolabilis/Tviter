@@ -40,8 +40,8 @@ class UserRepositoryService
 
     public function persist(User $userData): void
     {
-        $usr = $userData->username();
-        $pswrd = password_hash($userData->password(),PASSWORD_ARGON2I);
+        $usr = $userData->getUsername();
+        $pswrd = password_hash($userData->getPassword(),PASSWORD_ARGON2I);
 
         $sql = 'INSERT INTO users VALUE (:user, :pass)';
 
@@ -58,13 +58,13 @@ class UserRepositoryService
 
     }
     public function verify(User $userData): bool {
-            $dbUser = $this->findByUsername($userData->username());
+            $dbUser = $this->findByUsername($userData->getUsername());
             if(empty($dbUser) ){
                 return false;
             }
 
 
-            return password_verify($userData->password(), $dbUser->password()) ?? false;
+            return password_verify($userData->getPassword(), $dbUser->getPassword()) ?? false;
 
 
     }

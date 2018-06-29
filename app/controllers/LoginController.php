@@ -11,12 +11,13 @@ class LoginController implements Controller
         $logService = new LoginService();
         if ($request->getMethod() === "GET") {
             $this->svrha = $request->getGet()['controller'];
+
             $this->showHtml();
-            if (ucfirst($this->svrha) === 'Odjava') {
+            if (ucfirst($this->svrha) === 'Odjava' || $this->svrha=== 'Registracija') {
                 $_SESSION = [];
                 session_destroy();
-                $this->showHtml();
-                return new IndexResponse();
+
+                return new EmptyResponse();
             }
         }
 
@@ -42,7 +43,6 @@ class LoginController implements Controller
     }
     public function showHtml(): void {
         $this->svrha = ucfirst($this->svrha);
-        include_once ('../app/Templating.php');
         $renderer=new TemplateService('../app/templates');
         echo $renderer->render('main.php',
             array('title'=>$this->svrha)
@@ -55,7 +55,13 @@ class LoginController implements Controller
             <label>Korisničko ime: <input type="text" name="username" value=<?= $this->username ?? ""?>> </label>
             <label>Lozinka: <input type="password" name="password" value=""> </label>
             <input type="submit" value="prijavi se">
+
         </form>
+        <form method="get">
+            Nemate korisnički račun?
+            <input type="submit" value="Registracija" name="controller">
+        </form>
+
         <?php
     }
 }

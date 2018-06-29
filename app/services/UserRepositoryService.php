@@ -29,7 +29,7 @@ class UserRepositoryService
         $stmt->execute();
         foreach ($stmt as $row) {
             if($row !== null){
-                $user = new User($row['user'], $row['PASSWORD']);
+                $user = new User($row['user'], $row['pass']);
             }
             break;
         }

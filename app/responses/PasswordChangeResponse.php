@@ -1,15 +1,13 @@
 <?php
-class RegisterResponse implements Response
+
+class PasswordChangeResponse implements Response
 {
-
-
-
     public function send(): void
     {
-        echo 'Registracija uspješna';
+        echo 'Promjena lozinke uspješna';
         $renderer = new TemplateService('../app/templates');
         echo $renderer->render('main.php',
-            array('title'=>'Registracija@tviter',
+            array('title'=>'Tviter',
                 'body'=> $renderer->render('submitController.php',
                     array('values'=>['Početna'])
                 )

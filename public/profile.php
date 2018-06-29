@@ -1,22 +1,22 @@
 <?php
 session_start();
 include_once 'autoload.php';
-var_dump($_SESSION['user']);
-if(!(new UserRepositoryService())->isLoggedInNow()){
+
+if(!isset($_SESSION['user'])){
     header('location: index.php?controller=prijava' );
 }
 
 
 
 switch($_GET['controller'] ?? 'profile') {
-    case 'prijava':
-        $controller = new LoginController();
+    case 'Promjena lozinke':
+        $controller = new PasswordChangeController();
         break;
     case 'odjava':
         $controller = new LoginController();
         break;
-    case 'index':
-        $controller = new IndexController();
+    case 'Početna':
+        header('location: index.php');
         break;
     case 'profile':
         $controller = new ProfileController();
@@ -32,7 +32,7 @@ $request = new Request(
     $_FILES
 );
 
-#require_once $file;
+
 $response =new EmptyResponse();
 try {
     $response = $controller->handle($request);
@@ -53,6 +53,6 @@ $index->showForm();
 
 ?>
 
-Dobrošao na svoj tviter profil <?php echo $_SESSION['user'];?>
+
 
 

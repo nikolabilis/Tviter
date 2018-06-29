@@ -11,14 +11,14 @@ class RegistrationService extends UserRepositoryService
 
 
     public function validateUserData(User $user, string $passwordConfirm): bool {
-        return !(
-            mb_strlen($user->username()) <= 24
+        return (
+            mb_strlen($user->getUsername()) <= 24
             &&
-            preg_match('/^[\w-]*[A-Za-z\p{L}]+[\w-]*$/u', $this->username)
+            preg_match('/^[\w-]*[A-Za-z\p{L}]+[\w-]*$/u', $user->getUsername())
             &&
-            $user->password()===$passwordConfirm
+            $user->getPassword()===$passwordConfirm
             &&
-            mb_strlen($user->password()) >= 6);
+            mb_strlen($user->getPassword()) >= 6);
     }
     public function usernameAlreadyExists(string $username): bool{
         return !empty($this->findByUsername($username));
@@ -27,10 +27,31 @@ class RegistrationService extends UserRepositoryService
 
     public function persist(User $userData): void
     {
-        $usr = $userData->username();
-        $pswrd = password_hash($userData->password(),PASSWORD_ARGON2I);
+        $usr = $userData->getUsername();
+        $pswrd = password_hash($userData->getPassword(),PASSWORD_ARGON2I);
 
         $sql = 'INSERT INTO users VALUE (:user, :pass)';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(
+            ':user',
+            $usr,
+            PDO::PARAM_STR
+        );
+        $stmt->bindParam(
+            ':pass',
+            $pswrd);
+        $stmt->execute();
+
+    }
+    public function changePassword(User $userData): void
+    {
+        $usr = $userData->getUsername();
+        $pswrd = password_hash($userData->getPassword(),PASSWORD_ARGON2I);
+
+        $sql = 'UPDATE users
+                SET pass = :pass
+                WHERE user = :user';
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(

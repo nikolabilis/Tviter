@@ -19,12 +19,13 @@ class RegisterController implements Controller
             $regService = new RegistrationService();
 
 
+
             if(!$regService->validateUserData($user,$request->getPost()['password2']))
             {
                 throw new InvalidArgumentException('Podaci nisu u ispravnom obliku');
             }
 
-            if($regService->UsernameAlreadyExists($user->username()))
+            if($regService->UsernameAlreadyExists($user->getUsername()))
             {
                 throw new InvalidArgumentException('Korisničko ime već postoji');
             }
@@ -47,12 +48,17 @@ class RegisterController implements Controller
 
     public function showForm(): void {
         ?>
-        <form method="post">
-            <label>Korisničko ime: <input type="text" name="username" value=<?= $this->username ?? ""?>> </label>
-            <label>Lozinka: <input type="password" name="password1" value=<?= $this->password ?? ""?>> </label>
-            <label>Ponovi lozinku: <input type="password" name="password2" value=<?= $this->password ?? ""?>></label>
-            <input type="submit" value="registracija">
+        <form>
+            <input type="submit" value="Početna" name="controller">
         </form>
+        <form method="post">
+            <h4>Unesite željeno jedinstveno korisničko ime i lozinku:</h4><br>
+            <label>Korisničko ime: <input type="text" name="username" value=<?= $this->username ?? ""?>> </label><br>
+            <label>Lozinka:        <input type="password" name="password1" value=<?= $this->password ?? ""?>> </label><br>
+            <label>Ponovi lozinku: <input type="password" name="password2" value=<?= $this->password ?? ""?>></label><br>
+            <input type="submit" value="Registracija">
+        </form>
+
         <?php
     }
 

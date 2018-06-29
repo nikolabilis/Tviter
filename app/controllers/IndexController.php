@@ -1,6 +1,6 @@
 <?php
 
-include_once 'autoload.php';
+
 
 class IndexController implements Controller
 {
@@ -10,9 +10,22 @@ class IndexController implements Controller
     }
     public function showForm()
     {
-        $renderer = new TemplateService('../app/Templates.php');
-        $renderer->render('submitController.php', array('Profil', 'Pratitelji', 'Pratiš', 'Odjava'));
+        echo '<h1>Dobrodošli na tviter!</h1>';
 
+
+        $renderer = new TemplateService('../app/templates');
+        echo $renderer->render(
+            'main.php',
+            array(
+                'title' => 'Tviter',
+                'body' => $renderer->render(
+                    'submitController.php',
+                    array('values' => isset($_SESSION['user']) ? ['Profil', 'Pratitelji', 'Pratiš', 'Odjava']: ['Prijava','Registracija'])
+                )
+            )
+
+
+        );
     }
 
 
@@ -21,19 +34,6 @@ class IndexController implements Controller
 
 
 
-        $renderer = new TemplateService('../app/templates');
-        echo $renderer->render(
-            'main.php',
-                array(
-                    'title' => 'Tviter',
-                    'body' => $renderer->render(
-                                'submitController.php',
-                                array('values' => ['Profil', 'Pratitelji', 'Pratiš', 'Odjava'])
-                                )
-                     )
-
-
-        );
     }
 
 
