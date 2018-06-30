@@ -1,7 +1,7 @@
 <?php
 
-include_once 'db.php';
-class RegistrationService extends UserRepositoryService
+
+class RegistrationService extends RepositoryService
 {
 
     public function __construct()

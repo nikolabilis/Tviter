@@ -6,9 +6,9 @@ class PasswordChangeResponse implements Response
     {
         echo 'Promjena lozinke uspješna';
         $renderer = new TemplateService('../app/templates');
-        echo $renderer->render('main.php',
+        echo $renderer->render('mainTemplate.php',
             array('title'=>'Tviter',
-                'body'=> $renderer->render('submitController.php',
+                'body'=> $renderer->render('submitControllerTemplate.php',
                     array('values'=>['Početna'])
                 )
             )

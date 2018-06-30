@@ -44,7 +44,7 @@ class LoginController implements Controller
     public function showHtml(): void {
         $this->svrha = ucfirst($this->svrha);
         $renderer=new TemplateService('../app/templates');
-        echo $renderer->render('main.php',
+        echo $renderer->render('mainTemplate.php',
             array('title'=>$this->svrha)
         );
     }

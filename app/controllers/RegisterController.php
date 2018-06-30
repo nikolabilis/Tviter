@@ -41,7 +41,7 @@ class RegisterController implements Controller
     public function showHtml(): void {
         include_once ('../app/Templating.php');
         $renderer=new TemplateService('../app/templates');
-        echo $renderer->render('main.php',
+        echo $renderer->render('mainTemplate.php',
             array('title'=>'Registracija')
         );
     }

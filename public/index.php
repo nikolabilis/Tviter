@@ -19,7 +19,7 @@ switch($_GET['controller'] ?? 'Početna') {
         $controller = new IndexController();
         break;
     case 'Profil':
-        header('location: profile.php?' . $_SESSION['user'] ?? '');
+        header('location: profile.php?controller=' . $_SESSION['user'] ?? '');
         break;
     case 'Pratitelji':
         $controller = new FollowerController();

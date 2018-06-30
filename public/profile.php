@@ -18,12 +18,13 @@ switch($_GET['controller'] ?? 'profile') {
     case 'Početna':
         header('location: index.php');
         break;
-    case 'profile':
-        $controller = new ProfileController();
-        break;
     default:
-        $controller = new ErrorController();
-
+        if((new RegistrationService())->findByUsername($_GET['controller'] ??'')){
+            $controller = new ProfileController();
+        }
+        else {
+            $controller = new ErrorController();
+        }
 }
 $request = new Request(
     $_SERVER['REQUEST_METHOD'],

@@ -6,7 +6,7 @@
  * Time: 18:01
  */
 
-class LoginService extends UserRepositoryService
+class LoginService extends RepositoryService
 {
     public function __construct()
     {

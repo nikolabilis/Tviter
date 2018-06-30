@@ -8,9 +8,9 @@ class RegisterResponse implements Response
     {
         echo 'Registracija uspješna';
         $renderer = new TemplateService('../app/templates');
-        echo $renderer->render('main.php',
+        echo $renderer->render('mainTemplate.php',
             array('title'=>'Registracija@tviter',
-                'body'=> $renderer->render('submitController.php',
+                'body'=> $renderer->render('submitControllerTemplate.php',
                     array('values'=>['Početna'])
                 )
             )

@@ -2,7 +2,7 @@
 
 include_once 'db.php';
 
-class UserRepositoryService
+class RepositoryService
 {
    protected $db;
 
