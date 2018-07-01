@@ -8,11 +8,12 @@ class IndexController implements Controller
     public function handle(Request $request): Response
     {
         $feed = new FeedService();
-        $this->posts = $feed->getTenPosts($feed->choosePage($request));
+        $this->posts = $feed->getTenPosts($feed->choosePage($request), $_SESSION['user']);
 
         if($request->getMethod()==='POST'){
             $postService = new PostService();
             $postService->handle($request->getPost()['ulaz']);
+
 
         }
         return new EmptyResponse();
@@ -21,7 +22,14 @@ class IndexController implements Controller
     {
         echo '<h1>Dobrodošli na tviter!</h1>';
 
+        ?>
 
+        <form method="post"  action="index.php?controller=search">
+            Tražilica: <input type="text" name="search">
+            <input type = "submit" value="traži">
+        </form>
+
+        <?
 
 
         $renderer = new TemplateService('../app/templates');

@@ -1,41 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nikolabilis
- * Date: 23.06.18.
- * Time: 21:28
- */
 
-class FollowerController implements Controller
+
+class SearchController implements Controller
 {
-    private $svrha;
-    private $user;
     private $users;
+    private $searchString;
     public function handle(Request $request): Response
     {
-
+        $this->searchString = $request->getPost()['search'];
         $searchService = new SearchService();
-        if(empty($_SESSION['user'])){
-            return new ErrorResponse('Niste logirani, ne biste se smjeli nači tu gdje se nalazite');
+        try {
+            $this->users = $searchService->findUsers($this->searchString, 0);
         }
-        $this->svrha=$request->getGet()['controller'];
-        if($this->svrha === 'Pratiš') {
-            $type = 2;
+        catch (TypeError $exc){
+            echo $exc;
+            return new ErrorResponse('Zatražena stranica ne postoji na ovom serveru');
+
         }
-        else if ($this->svrha === 'Pratitelji'){
-            $type = 1;
-        }
-        else {
-            throw new InvalidArgumentException('Nepropisan ulaz za type');
-        }
-        $this->user = $_SESSION['user'];
-        $this->users = $searchService->findUsers($this->user, $type);
         return new EmptyResponse();
-
-
-
     }
-
     public function showForm()
     {
         $renderer = new TemplateService('../app/templates');
@@ -50,14 +33,8 @@ class FollowerController implements Controller
             )
         );
 
-        if($this->svrha === 'Pratiš') {
-            echo '<h3>Korisnici koje prati korisnik '. $this->user .'</h3>';
-        }
-        else if ($this->svrha === 'Pratitelji'){
-            echo '<h3>Pratitelji korisnika '. $this->user .'</h3>';
-        }
-
-
+        echo '<h2>Rezultati pretrage za: "' . $this->searchString . '"';
+        echo '<h3>Korisnici</h3>';
         echo $renderer->render(
             'mainTemplate.php',
             array(
@@ -69,6 +46,18 @@ class FollowerController implements Controller
             )
         );
 
+        echo '<h3>Postovi</h3>';
+        $renderer = new TemplateService('../app/templates');
+        echo $renderer->render(
+            'mainTemplate.php',
+            array(
+
+                'body' => $renderer->render(
+                    'userSearchTemplate.php',
+                    array('users' => $this->users)
+                )
+            )
+        );
     }
     public function showHtml()
     {

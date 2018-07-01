@@ -16,7 +16,6 @@ class LoginController implements Controller
             if (ucfirst($this->svrha) === 'Odjava' || $this->svrha=== 'Registracija') {
                 $_SESSION = [];
                 session_destroy();
-
                 return new EmptyResponse();
             }
         }

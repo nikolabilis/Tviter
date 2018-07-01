@@ -24,8 +24,11 @@ switch($_GET['controller'] ?? 'Početna') {
     case 'Pratitelji':
         $controller = new FollowerController();
         break;
+    case 'search':
+        $controller = new SearchController();
+        break;
     case 'Pratiš':
-        $controller = new IndexController();
+        $controller = new FollowerController();
         break;
 
     default:

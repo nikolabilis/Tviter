@@ -3,23 +3,71 @@
 
 class ProfileController implements Controller
 {
+    private $repositoryService;
+    private $currentUser;
+    private $viewedUser;
     private $posts;
+
+    public function __construct(RepositoryService $repositoryService)
+    {
+        $this->repositoryService=$repositoryService;
+    }
+
     public function handle(Request $request): Response
     {
-
-
-        if($this->isMyProfile()){
-            echo 'Dobrodošao na svoj Tviter profil '. $_SESSION['user'];
-        }
+        $this->currentUser = $_SESSION['user'];
+        $this->viewedUser = $request->getGet()['controller'];
+        echo 'Dobrodošao na profil korisnika '. $this->viewedUser ;
         $feed = new FeedService();
-        $this->posts = $feed->getTenPosts($feed->choosePage(),$request->getGet()['controller'], false);
+        $this->posts = $feed->getTenPosts($feed->choosePage(),$this->viewedUser, false);
+
+        if($request->getMethod()==='POST'){
+            if($request->getPost()['controller'] === 'prati'){
+            $feed->follow($this->currentUser, $this->viewedUser);
+        }
+            else if($request->getPost()['controller'] === 'odprati'){
+                $feed->unfollow($this->currentUser, $this->viewedUser);
+            }
+        }
         return new EmptyResponse();
     }
 
     public function showHtml()
     {
 
+
+    }
+    public function showForm()
+    {
         $renderer = new TemplateService('../app/templates');
+        if(!$this->isMyProfile()) {
+            ?>
+            <form method="post">
+                <input type="hidden" value="<? echo $_GET['controller']; ?>" name="controller"/>
+                <input type="submit" value="<?
+                       echo $this->repositoryService->isFollowing($this->currentUser, $this->viewedUser)
+                                   ?  'odprati' : 'prati'?>"
+                                    name="controller">
+            </form>
+            <?
+
+
+        }
+
+
+        echo $renderer->render(
+            'mainTemplate.php',
+            array(
+                'title' => $_GET['controller']. '@tviter',
+                'body' => $renderer->render(
+                    'submitControllerTemplate.php',
+                    array('values' => ['Početna', 'Privatne poruke', 'Promjena lozinke', 'Odjava'])
+                )
+            )
+
+
+        );
+
         echo $renderer->render(
             'mainTemplate.php',
             array(
@@ -29,22 +77,7 @@ class ProfileController implements Controller
                 )
             )
         );
-        echo $renderer->render(
-            'mainTemplate.php',
-            array(
-                'title' => $_SESSION['user']. '@tviter',
-                'body' => $renderer->render(
-                    'submitControllerTemplate.php',
-                    array('values' => ['Početna', 'Privatne poruke', 'Promjena lozinke', 'Odjava'])
-                )
-            )
 
-
-        );
-    }
-    public function showForm()
-    {
-        // TODO: Implement showForm() method.
     }
     private function isMyProfile(): bool{
         return $_SESSION['user']===$_GET['controller'];

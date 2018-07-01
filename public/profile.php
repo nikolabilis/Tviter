@@ -7,20 +7,22 @@ if(!isset($_SESSION['user'])){
 }
 
 
-
 switch($_GET['controller'] ?? 'profile') {
     case 'Promjena lozinke':
         $controller = new PasswordChangeController();
         break;
-    case 'odjava':
-        $controller = new LoginController();
+    case 'Privatne Poruke':
+        $controller = new DMcontroller();
+        break;
+    case 'Odjava':
+        header('location: index.php?controller=Odjava');
         break;
     case 'Početna':
         header('location: index.php');
         break;
     default:
         if((new RegistrationService())->findByUsername($_GET['controller'] ??'')){
-            $controller = new ProfileController();
+            $controller = new ProfileController(new RepositoryService());
         }
         else {
             $controller = new ErrorController();
@@ -47,12 +49,10 @@ finally {
         $controller->showForm();
     }
 }
-$index = new ProfileController();
-$index->showHtml();
-$index->showForm();
 
 
-?>
+
+
 
 
 

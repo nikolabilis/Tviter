@@ -11,21 +11,25 @@ class FeedService extends RepositoryService
     public function getTenPosts(int $cnt, String $username = '', bool $main = true): array{
         if(!$main) {
             $sql = <<<'SQL'
-        SELECT user, post, time  FROM posts WHERE user = :username ORDER BY time DESC LIMIT 10 OFFSET :cnt
+                SELECT * FROM posts  WHERE posts.user = :username ORDER BY time DESC
+        LIMIT 10 OFFSET :cnt
 SQL;
         }
         else {
             $sql = <<<'SQL'
-        SELECT user, post, time  FROM posts ORDER BY time DESC LIMIT 10 OFFSET :cnt
+                SELECT * FROM posts
+        WHERE posts.user IN (SELECT followedUser FROM  followingTracker WHERE userWhoFollows = :username) OR posts.user = :username
+        ORDER BY time DESC
+        LIMIT 10 OFFSET :cnt
 SQL;
         }
 
         $stmt = $this->db->prepare($sql);
 
         $stmt->bindValue(':cnt', $cnt, PDO::PARAM_INT);
-        if(!$main) {
-            $stmt->bindValue(':username', $username, PDO::PARAM_INT);
-        }
+
+        $stmt->bindValue(':username', $username, PDO::PARAM_STR);
+
         $stmt->execute();
         $postArray = array();
         foreach ($stmt as $row) {

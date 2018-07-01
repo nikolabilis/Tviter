@@ -12,6 +12,20 @@ class StringResponse implements Response
     }
     public function send(): void
     {
-        echo $this->string;
+        echo $this->string.'<br>';
+
+        $renderer = new TemplateService('../app/templates');
+        echo $renderer->render(
+            'mainTemplate.php',
+            array(
+                'title' => 'Tviter',
+                'body' => $renderer->render(
+                    'submitControllerTemplate.php',
+                    array('values' => ['Početna'])
+                )
+            )
+
+
+        );
     }
 }
