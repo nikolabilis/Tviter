@@ -13,8 +13,13 @@ foreach ($posts as $post):
 
 <form>
     <br>
+    <?if(!empty($_GET['controller'])):?>
+        <input type="hidden" name="controller" value="<?echo $_GET['controller'] ?? ''?>">
+
+    <? endif ;?>
     <input type="submit" value="početak" name="stranica">
     <input type="submit" value="prethodna" name="stranica">
     <input type="submit" value="sljedeća" name="stranica">
+
     <br>
 </form>

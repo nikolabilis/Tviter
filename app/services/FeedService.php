@@ -14,6 +14,7 @@ class FeedService extends RepositoryService
                 SELECT * FROM posts  WHERE posts.user = :username ORDER BY time DESC
         LIMIT 10 OFFSET :cnt
 SQL;
+
         }
         else {
             $sql = <<<'SQL'

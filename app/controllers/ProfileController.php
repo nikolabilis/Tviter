@@ -68,6 +68,7 @@ class ProfileController implements Controller
 
         );
 
+
         echo $renderer->render(
             'mainTemplate.php',
             array(

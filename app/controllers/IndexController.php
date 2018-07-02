@@ -8,7 +8,7 @@ class IndexController implements Controller
     public function handle(Request $request): Response
     {
         $feed = new FeedService();
-        $this->posts = $feed->getTenPosts($feed->choosePage($request), $_SESSION['user']);
+        $this->posts = $feed->getTenPosts($feed->choosePage(), $_SESSION['user'] ?? '');
 
         if($request->getMethod()==='POST'){
             $postService = new PostService();

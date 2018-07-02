@@ -7,19 +7,20 @@ class Message
     private $recipient;
     private $title;
     private $msg;
-    public function __construct(String $sender, String $recipient, String $title, array $msg)
+    private $dateTime;
+    public function __construct(String $sender, String $recipient, String $title, String $msg, DateTime $datetime)
     {
         $this->msg=$msg;
         $this->recipient=$recipient;
         $this->sender = $sender;
         $this->title = $title;
-
+        $this->dateTime = $datetime;
     }
 
     /**
      * @return array
      */
-    public function getMsg(): array
+    public function getMsg(): String
     {
         return $this->msg;
     }
@@ -46,6 +47,14 @@ class Message
     public function getSender(): String
     {
         return $this->sender;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateTime(): DateTime
+    {
+        return $this->dateTime;
     }
 
 }

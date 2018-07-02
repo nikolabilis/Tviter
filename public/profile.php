@@ -11,7 +11,7 @@ switch($_GET['controller'] ?? 'profile') {
     case 'Promjena lozinke':
         $controller = new PasswordChangeController();
         break;
-    case 'Privatne Poruke':
+    case 'Privatne poruke':
         $controller = new DMcontroller();
         break;
     case 'Odjava':

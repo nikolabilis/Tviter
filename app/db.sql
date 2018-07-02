@@ -35,10 +35,14 @@ ON DELETE CASCADE
 ON UPDATE RESTRICT;
 
 CREATE TABLE DMs(
-  sender VARCHAR(256) NOT NULL,
-  receiver VARCHAR(256) NOT NULL,
-  messagge TEXT NOT NULL,
+  sender VARCHAR(64) NOT NULL,
+  receiver VARCHAR(64) NOT NULL,
+  title VARCHAR(64),
+  message TEXT NOT NULL,
   time DATETIME NOT NULL);
+
+INSERT INTO DMs
+    VALUE ('Nikola123', 'alokin','test poruka','Pozdrav alokin, to sam ja. Nikola123', now());
 
 ALTER TABLE DMs
   ADD CONSTRAINT idx_msgSender
